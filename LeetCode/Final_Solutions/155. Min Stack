@@ -1,0 +1,71 @@
+class MinStack:
+
+    def __init__(self):
+        """
+        initialize your data structure here.
+        """
+        self.s = []
+        self.cur_min = None
+
+
+    def push(self, x):
+        """
+        :type x: int
+        :rtype: void
+        """
+        if (self.cur_min is None) or (x < self.cur_min):
+            self.cur_min = x
+        self.s.append((x, self.cur_min))
+
+
+    def pop(self):
+        """
+        :rtype: void
+        """
+        if not self.s:
+            return
+        x, x_min = self.s.pop()
+        if not self.s:
+            self.cur_min = None
+        else:
+            self.cur_min = self.s[-1][1]
+
+
+
+    def top(self):
+        """
+        :rtype: int
+        """
+        return self.s[-1][0]
+
+
+    def getMin(self):
+        """
+        :rtype: int
+        """
+        return self.cur_min
+
+
+
+# Your MinStack object will be instantiated and called as such:
+# obj = MinStack()
+# obj.push(x)
+# obj.pop()
+# param_3 = obj.top()
+# param_4 = obj.getMin()
+
+
+
+
+        # self.arr += [x]
+        # # sift_up:
+        # i = len(self.arr) -1
+        # while i > 0
+        #     #  parent index:
+        #     ip = i // 2
+        #     if self.arr[ip] > self.arr[i]:
+        #         # switch and go up:
+        #         self.arr[ip], self.arr[i] = self.arr[i], self.arr[ip]
+        #         i = ip
+        #     else:
+        #         break

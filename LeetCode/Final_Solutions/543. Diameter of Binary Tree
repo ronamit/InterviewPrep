@@ -1,0 +1,42 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+def childs_longest_routes(p):
+    if p == None:
+        return 0,0,0
+    if p.left is None:
+        l_len = 0
+        l_in_len = 0
+    else:
+        l_l_len, l_r_len, l_in_len = childs_longest_routes(p.left)
+        l_len = 1+max(l_l_len, l_r_len)
+    if p.right is None:
+        r_len = 0
+        r_in_len = 0
+    else:
+        r_l_len, r_r_len, r_in_len = childs_longest_routes(p.right)
+        r_len = 1+max(r_l_len, r_r_len)
+
+    in_len = max(l_len + r_len, r_in_len, l_in_len)
+    return l_len, r_len, in_len
+
+
+
+
+class Solution:
+    def diameterOfBinaryTree(self, root):
+        """
+        :type root: TreeNode
+        :rtype: int
+        """
+        if root is None:
+            return 0
+        l_len, r_len, in_len = childs_longest_routes(root)
+        print(l_len, r_len, in_len)
+        return max(l_len + r_len, in_len)
+
+

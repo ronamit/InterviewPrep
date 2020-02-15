@@ -1,0 +1,19 @@
+class Solution:
+    def longestConsecutive(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        n = len(nums)
+        numSet = set(nums)
+        stk = []
+        for i in range(n):
+            if (nums[i] - 1) not in numSet:
+                stk.append((nums[i], 1))
+        maxLen = 0
+        while stk:
+            a, seqLen = stk.pop()
+            if a+1 in numSet:
+                stk.append((a+1, seqLen+1))
+            maxLen = max(maxLen, seqLen)
+        return maxLen

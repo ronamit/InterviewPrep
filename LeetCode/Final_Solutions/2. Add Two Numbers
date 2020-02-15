@@ -1,0 +1,35 @@
+
+class Solution:
+    def addTwoNumbers(self, l1, l2):
+        """
+        :type l1: ListNode
+        :type l2: ListNode
+        :rtype: ListNode
+        """
+
+        a = l1
+        b = l2
+
+        dummyRoot = ListNode(0) # dummy root
+        out = dummyRoot
+        carry = 0
+
+        while (a is not None) or (b is not None) or (carry > 0):
+
+            if a is not None: a_val = a.val
+            else: a_val = 0
+
+            if b is not None: b_val = b.val
+            else: b_val = 0
+
+            s = a_val + b_val + carry
+            carry = int(s / 10)
+            s = s % 10
+            out.next = ListNode(s)
+            out = out.next
+            if a is not None: a = a.next
+            if b is not None: b = b.next
+
+        out = dummyRoot.next
+        return out
+

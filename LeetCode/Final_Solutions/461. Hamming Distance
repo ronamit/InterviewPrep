@@ -1,0 +1,14 @@
+class Solution:
+    def hammingDistance(self, x, y):
+        """
+        :type x: int
+        :type y: int
+        :rtype: int
+        """
+        # xor
+        z = x ^ y
+        dist = 0
+        while z != 0:
+            dist += z % 2
+            z = z // 2
+        return dist

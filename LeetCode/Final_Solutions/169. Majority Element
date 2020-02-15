@@ -1,0 +1,20 @@
+class Solution:
+    def majorityElement(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        n_set = {}
+        for a in nums:
+            if a in n_set:
+                n_set[a] += 1
+            else:
+                n_set[a] = 1
+
+        max_count = 0
+        maj_el = -1
+        for a in n_set:
+            if n_set[a] > max_count:
+                max_count = n_set[a]
+                maj_el = a
+        return maj_el

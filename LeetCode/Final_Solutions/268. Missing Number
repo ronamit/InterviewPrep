@@ -1,0 +1,11 @@
+class Solution:
+    def missingNumber(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        n = len(nums)
+        max_el = max(nums)
+        if max_el < n:
+            return n
+        return int((n+1)*n/2 - sum(nums))

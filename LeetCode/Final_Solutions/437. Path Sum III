@@ -1,0 +1,26 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+class Solution:
+    def pathSum(self, root: 'TreeNode', S: 'int') -> 'int':
+          def RecFunc(t, S, pathsSums):
+            count = 0
+            if not t:
+                return 0
+            newPathsSums = []
+            for v in pathsSums:
+                newPathsSums.append(v + t.val)
+            newPathsSums.append(t.val)
+            for pv in newPathsSums:
+                count +=  (pv == S)
+            count += RecFunc(t.left, S, newPathsSums)
+            count += RecFunc(t.right, S, newPathsSums)
+            return count
+          return  RecFunc(root, S, [])
+
+
+

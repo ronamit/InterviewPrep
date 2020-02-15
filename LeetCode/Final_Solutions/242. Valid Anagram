@@ -1,0 +1,28 @@
+class Solution:
+    def isAnagram(self, s, t):
+        """
+        :type s: str
+        :type t: str
+        :rtype: bool
+        """
+        if len(s) != len(t):
+            return False
+        chrs_s = {}
+        for a in s:
+            if a in chrs_s:
+                chrs_s[a] += 1
+            else:
+                chrs_s[a] = 1
+        chrs_t = {}
+        for a in t:
+            if a in chrs_t:
+                chrs_t[a] += 1
+            else:
+                chrs_t[a] = 1
+        for a in chrs_s.keys():
+            if a not in chrs_t or chrs_t[a] != chrs_s[a]:
+                return False
+        for a in chrs_t.keys():
+            if a not in chrs_s or chrs_t[a] != chrs_s[a]:
+                return False
+        return True

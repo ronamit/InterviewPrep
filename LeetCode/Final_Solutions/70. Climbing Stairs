@@ -1,0 +1,19 @@
+class Solution:
+    def climbStairs(self, n):
+        """
+        :type n: int
+        :rtype: int
+        """
+        if n==0: return 1
+        if n==1: return 1
+        if n==2: return 2
+
+        # V = how many ways to climb starting at each stair
+        V = [1 for _ in range(n)]
+        V[-2] = 2
+        for i in range(n-3,-1,-1):
+            # sum the distinct possibilites: take one step and continue - and the rest
+            V[i] = V[i+1] + V[i+2]
+
+        return V[0]
+

@@ -1,0 +1,28 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+class Solution:
+    def isBalanced(self, root):
+        """
+        :type root: TreeNode
+        :rtype: bool
+        """
+        self.sol = True
+
+        def node_depth(p):
+            # depth in number of 'nodes'
+            if not p:
+                return 0
+            else:
+                left_depth = node_depth(p.left)
+                right_depth = node_depth(p.right)
+                if abs(right_depth - left_depth) > 1:
+                    self.sol = False
+                return 1 + max(left_depth, right_depth)
+
+        node_depth(root)
+        return self.sol

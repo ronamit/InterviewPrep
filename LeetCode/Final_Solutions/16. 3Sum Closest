@@ -1,0 +1,19 @@
+class Solution:
+    def threeSumClosest(self, nums, target):
+        """
+        :type nums: List[int]
+        :type target: int
+        :rtype: int
+        """
+        n = len(nums)
+        min_dist = None
+        min_d_sum = None
+        for i in range(n):
+            for j in range(i+1, n):
+                for k in range(j+1,n):
+                    s = nums[i]+nums[j]+nums[k]
+                    dist = abs(target - s)
+                    if min_dist is None or dist < min_dist:
+                        min_dist = dist
+                        min_d_sum = s
+        return min_d_sum

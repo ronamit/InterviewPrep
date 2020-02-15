@@ -1,0 +1,12 @@
+class Solution:
+        def twoSum(self, nums, target):
+            seen = {}
+            n = len(nums)
+            for i in range(n):
+                x = nums[i]
+                if target-x in seen:
+                    j = seen[target-x]
+                    return [i,j]
+                seen[x] = i
+            return []
+

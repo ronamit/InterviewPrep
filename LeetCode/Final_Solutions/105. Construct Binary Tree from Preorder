@@ -1,0 +1,22 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+class Solution:
+    def buildTree(self, preorder: 'List[int]', inorder: 'List[int]') -> 'TreeNode':
+
+        def RecFunc(preL, inL):
+            if not preL or not inL:
+                return None
+            if len(preL) != len(inL):
+                print('ERROR!!!')
+            rootKey = preL[0]
+            root = TreeNode(rootKey)
+            rootInd = inL.index(rootKey)
+            root.left = RecFunc(preL[1:(rootInd+1)], inL[:rootInd])
+            root.right = RecFunc(preL[rootInd+1:], inL[rootInd+1:])
+            return root
+        return RecFunc(preorder, inorder)

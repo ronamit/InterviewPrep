@@ -1,0 +1,48 @@
+class Solution:
+    def fourSum(self, nums, target):
+        """
+        :type nums: List[int]
+        :type target: int
+        :rtype: List[List[int]]
+        """
+        n = len(nums)
+        if n == 0: return []
+
+        num_inds = {}  # dictionary / hash-table for numbers as keys and index as values, we save up to 3 indexes of any number
+
+        for i in range(n):
+            if nums[i] not in num_inds:
+                num_inds[nums[i]] = [i]
+            elif len(num_inds[nums[i]]) < 4:
+                # we need to save only up to 4 appearances (saving runtime)
+                num_inds[nums[i]] += [i]  # add the index i to the list of indexes for this number
+
+
+        q_tab = {}  # hash-table for triplets
+        counter = 0
+
+        # at least one must be smaller than target/4 and at least one must be highr than target 4
+        big = sorted(list(filter(lambda x: x <= target/4, num_inds.keys())))
+        sml = sorted(list(filter(lambda x: x >= target/4, num_inds.keys())))
+
+
+        for (a_i, a) in enumerate(big):
+            for (b_i, b)  in enumerate(sml):
+                for c in num_inds.keys():
+                        d = target-(a + b + c)
+                        # check if c is a number in the table
+                        if d in num_inds:
+                            # go over all its indexes quadruplets
+                            found = False
+                            index_opts = [(i, j, k, m) for k in num_inds[c] \
+                                  for j in num_inds[b] for i in num_inds[a] for m in num_inds[d]]
+                            for index_tuple in index_opts:
+                                if found: break
+                                # check we have 4 unique indexes
+                                if len(set(index_tuple)) == 4:
+                                    quadruplet  = tuple(sorted([a, b, c, d]))
+                                    q_tab[quadruplet] = counter
+                                    counter += 1
+                                    found = True
+
+        return (list(q_tab.keys()))

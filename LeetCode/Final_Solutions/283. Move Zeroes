@@ -1,0 +1,16 @@
+class Solution:
+    def moveZeroes(self, nums: 'List[int]') -> 'None':
+        """
+        Do not return anything, modify nums in-place instead.
+        """
+        shift = 0
+        n = len(nums)
+        for i, a in enumerate(nums):
+            if a == 0:
+                shift += 1
+            else:
+                nums[i-shift] = a
+        for i in range(n-shift, n):
+            nums[i] = 0
+
+        return

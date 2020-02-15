@@ -1,0 +1,94 @@
+
+
+class Solution:
+
+    def threeSum(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: List[List[int]]
+        """
+        n = len(nums)
+        if n == 0: return []
+
+        num_inds = {}  # dictionary / hash-table for numbers as keys and index as values, we save up to 3 indexes of any number
+
+        for i in range(n):
+            if nums[i] not in num_inds:
+                num_inds[nums[i]] = [i]
+            elif len(num_inds[nums[i]]) < 3:
+                # we need to save only up to 3 appearances (saving runtime)
+                num_inds[nums[i]] += [i]  # add the index i to the list of indexes for this number
+
+
+        trip_tab = {}  # hash-table for triplets
+        counter = 0
+
+        neg = sorted(list(filter(lambda x: x <= 0, num_inds.keys())))
+        pos = sorted(list(filter(lambda x: x >= 0, num_inds.keys())))
+
+
+        for a in neg:
+            for b in pos:
+                c = -(a + b)
+                # check if c is a number in the table
+                if c in num_inds:
+                    # go over all its indexes triplets (we have up to 3^3=27 options)
+                    found = False
+                    index_opts = [(i, j, k) for k in num_inds[c] \
+                              for j in num_inds[b] for i in num_inds[a]]
+                    for index_tuple in index_opts:
+                        if found: break
+                        # check we have 3 unique indexes
+                        if len(set(index_tuple)) ==3:
+                            triplet = tuple(sorted([a, b, c]))
+                            trip_tab[triplet] = counter
+                            counter += 1
+                            found = True
+
+        return (list(trip_tab.keys()))
+
+
+
+
+#--------------------------------------------------------------------
+# def binary_search(a, l, r, x):
+#     n = len(a)
+#     # r = n - 1
+#     # l = 0
+#     i = 0
+#     while (r >= l):
+#         i = int((r+l) / 2)
+#         if a[i] == x:
+#             return i, True
+#         elif a[i] > x:
+#             r = i - 1
+#         else:
+#             l = i + 1
+#     return i, False
+
+
+# class Solution:
+
+#     def threeSum(self, nums):
+#         """
+#         :type nums: List[int]
+#         :rtype: List[List[int]]
+#         """
+#         n = len(nums)
+#         if n == 0: return []
+#         triplests = set()
+#         nums = sorted(nums)
+
+#         for i in range(n):
+#             a = nums[i]
+#             for j in range(n-1,i+1-1, -1):
+#                 b = nums[j]
+#                 c = -(a+b)
+#                 k, found = binary_search(nums, i+1, j-1, c)
+#                 if found and not k in [i,j]:
+#                     triplet = tuple(sorted([a,b,c]))
+#                     triplests.add(triplet)
+
+
+#         return list(triplests)
+

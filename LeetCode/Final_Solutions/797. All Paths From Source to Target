@@ -1,0 +1,19 @@
+class Solution:
+    def allPathsSourceTarget(self, graph: List[List[int]]) -> List[List[int]]:
+        n = len(graph)
+        visited = [False for _ in range(n)]
+
+        def GetPaths(u, visited):
+            if u == n-1:
+                return [[n-1]]
+            nextNodes = [v for v in graph[u] if not visited[v]]
+            paths = []
+            for v in nextNodes :
+                    visited[u] = True
+                    nextPath = GetPaths(v, visited)
+                    visited[u] = False
+                    if nextPath:
+                        for path in nextPath:
+                            paths.append([u] + path)
+            return paths
+        return GetPaths(0, visited)

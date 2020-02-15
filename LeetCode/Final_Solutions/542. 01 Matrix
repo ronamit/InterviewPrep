@@ -1,0 +1,40 @@
+class Solution:
+    def updateMatrix(self, matrix):
+        """
+        :type matrix: List[List[int]]
+        :rtype: List[List[int]]
+        """
+
+        n = len(matrix)
+        m = len(matrix[0])
+        outmat = [[10**4 for _ in range(m)] for _ in range(n)]
+
+        # use shortest path algorithm - Belman-Ford
+        # we can do better - update with only 2 passes  - see soloution 4
+
+
+        for pass_ind in range(n*m):
+            is_updated = False
+            for i in range(n):
+                for j in range(m):
+                    if matrix[i][j] == 0:
+                        outmat[i][j] = 0
+                    else:
+                        neig = [] # neighbours
+                        if i<(n-1):
+                            neig.append(outmat[i+1][j])
+                        if j<(m-1):
+                            neig.append(outmat[i][j+1])
+                        if i>0:
+                            neig.append(outmat[i-1][j])
+                        if j>0:
+                            neig.append(outmat[i][j-1])
+                        new_shortest = 1+min(neig)
+                        if new_shortest < outmat[i][j]:
+                            outmat[i][j] = new_shortest
+                            is_updated = True
+            if not is_updated and pass_ind > 2:
+                break
+
+
+        return outmat
