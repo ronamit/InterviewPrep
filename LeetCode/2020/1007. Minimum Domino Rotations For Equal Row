@@ -1,0 +1,40 @@
+class Solution:
+    def minDominoRotations(self, A: List[int], B: List[int]) -> int:
+        n = len(A)
+        min_flips = n+1
+        for val in range(1,6+1):
+            # try flip to A:
+            flips = 0
+            success = True
+            for i in range(n):
+                if A[i] == val:
+                    continue
+                elif B[i] == val:
+                    flips += 1
+                else:
+                    success = False
+                    break
+            if success:
+                min_flips  = min(min_flips, flips)
+            # try flip to B:
+            flips = 0
+            success = True
+            for i in range(n):
+                if B[i] == val:
+                    continue
+                elif A[i] == val:
+                    flips += 1
+                else:
+                    success = False
+                    break
+            if success:
+                min_flips  = min(min_flips, flips)
+
+
+
+        if min_flips  > n:
+            return -1
+        else:
+            return min_flips
+
+
