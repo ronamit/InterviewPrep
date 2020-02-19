@@ -1,6 +1,5 @@
 class Solution:
     def shortestWay(self, source: str, target: str) -> int:
-
         i = 0
         n_subs = 0
         while i < len(target):
