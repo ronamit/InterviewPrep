@@ -30,7 +30,7 @@ class Solution:
                             edges_out[i].add(j)
 
         # Use dynamic-prog to find max len
-        max_starts_in_ind = [1 for i in range(n)] # max chain that starts in each index
+        max_starts_in_ind = [1 for i in range(n)]  # max chain that starts in each index
         for i in range(n-2, -1, -1):
             max_curr = 1
             for j in edges_out[i]:
