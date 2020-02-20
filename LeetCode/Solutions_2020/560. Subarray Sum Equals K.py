@@ -1,3 +1,5 @@
+from typing import List, Dict, Tuple, Sequence
+
 class Solution:
     def subarraySum(self, nums: List[int], k: int) -> int:
 
