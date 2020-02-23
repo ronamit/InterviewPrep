@@ -14,7 +14,7 @@ class Solution:
                 continue
             for shift in range(W):
                 k = i + shift
-                if k > n -1:
+                if k > n - 1:
                     return False
                 card_k, count_k = cnt_hist[k]
                 if card_k != card + shift or count_k < count:
