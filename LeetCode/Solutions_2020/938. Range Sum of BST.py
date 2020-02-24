@@ -5,6 +5,8 @@
 #         self.left = None
 #         self.right = None
 
+from LeetCode.TreeClass import TreeNode
+
 class Solution:
     def rangeSumBST(self, root: TreeNode, L: int, R: int) -> int:
 
