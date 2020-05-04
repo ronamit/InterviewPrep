@@ -1,0 +1,10 @@
+class Solution:
+    def findComplement(self, num: int) -> int:
+        comp = 0
+        pos = 1
+        while num != 0:
+            rbit =  num % 2
+            comp += pos * (1-rbit)
+            pos *= 2
+            num = num // 2
+        return comp
