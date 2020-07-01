@@ -19,7 +19,7 @@ class Solution:
                 else:
                     counts[j][1] -= count_i
             if shift < 3:
-            i += 1
+             i += 1
         return True
 
 
