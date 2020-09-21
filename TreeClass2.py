@@ -47,7 +47,7 @@ def drawtree(root):
 
     import turtle
     t = turtle.Turtle()
-    t.speed(0);
+    t.speed(0)
     turtle.delay(0)
     h = height(root)
     jumpto(0, 30 * h)
