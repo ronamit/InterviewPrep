@@ -1,7 +1,7 @@
 class TreeNode:
     ''' Print is based on:
     https://stackoverflow.com/questions/34012886/print-binary-tree-level-by-level-in-python'''
-    def __init__(self, key, val):
+    def __init__(self, key, val=None):
         self.key = key
         self.val = val
         self.right = None
