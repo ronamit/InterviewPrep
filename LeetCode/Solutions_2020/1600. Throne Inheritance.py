@@ -8,8 +8,8 @@ class Person:
         self.parentName = parentName
         self.childsNames = []
 
-    def create_newborn(self, childName: str, parentName: str):
-        child = Person(childName, parentName)
+    def add_child(self, childName):
+        child = Person(childName, self.parentName)
         self.childsNames = [childName] + self.childsNames # increaseing age order
         return child
 
@@ -23,7 +23,7 @@ class ThroneInheritance:
 
     def birth(self, parentName: str, childName: str) -> None:
         parent = self.persons[parentName]
-        child = parent.create_newborn(childName, parentName)
+        child = parent.add_child(childName)
         self.persons[childName] = child
 
 
