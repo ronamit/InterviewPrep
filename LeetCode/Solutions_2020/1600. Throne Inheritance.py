@@ -10,7 +10,7 @@ class Person:
         self.childsNames = collections.deque()
 
     def add_child(self, childName):
-        child = Person(childName, self.parentName)
+        child = Person(childName, parentName=self.name)
         self.childsNames.appendleft(childName)  # add to start (queue is in increasing age order)
         return child
 
