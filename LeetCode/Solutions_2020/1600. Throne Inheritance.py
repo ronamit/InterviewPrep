@@ -1,16 +1,17 @@
 from typing import List, Dict, Tuple, Sequence
 import itertools, collections
 
+
 class Person:
     def __init__(self, Name: str, parentName=''):
         self.name = Name
         self.isAlive = True
         self.parentName = parentName
-        self.childsNames = []
+        self.childsNames = collections.deque()
 
     def add_child(self, childName):
         child = Person(childName, self.parentName)
-        self.childsNames = [childName] + self.childsNames # increaseing age order
+        self.childsNames.appendleft(childName)  # add to start (queue is in increasing age order)
         return child
 
 
