@@ -34,7 +34,6 @@ class ThroneInheritance:
     # end def
 
     def getInheritanceOrder(self) -> List[str]:
-        inInhertedSet = set()
         personName = self.kingName
         inhert_order_living = []
         # Run DFS
