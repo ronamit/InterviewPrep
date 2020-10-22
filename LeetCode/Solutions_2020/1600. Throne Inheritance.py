@@ -7,11 +7,11 @@ class Person:
         self.name = Name
         self.isAlive = True
         self.parentName = parentName
-        self.childsNames = collections.deque()
+        self.childs = collections.deque()
 
     def add_child(self, childName):
         child = Person(childName, parentName=self.name)
-        self.childsNames.appendleft(childName)  # add to start (queue is in increasing age order)
+        self.childs .appendleft(child)  # add to start (queue is in increasing age order)
         return child
 
 
@@ -34,18 +34,16 @@ class ThroneInheritance:
     # end def
 
     def getInheritanceOrder(self) -> List[str]:
-        personName = self.kingName
         inhert_order_living = []
         # Run DFS
-        stk = [personName]
+        stk = [self.king]
         while stk:
-            personName = stk.pop()
-            person = self.persons[personName]
+            person = stk.pop()
             if person.isAlive:
                 inhert_order_living.append(person.name)
             # end if
-            for childName in person.childsNames:
-                stk.append(childName)
+            for child in person.childs:
+                stk.append(child)
             # end for
         # end while
         return inhert_order_living
