@@ -28,7 +28,6 @@ class ThroneInheritance:
 
 
     def death(self, name: str) -> None:
-        assert name in self.persons
         person = self.persons[name]
         person.isAlive = False
     # end def
