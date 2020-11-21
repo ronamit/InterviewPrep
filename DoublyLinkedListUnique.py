@@ -36,7 +36,8 @@ class DoublyLinkedListUnique : # source: http://xpzhang.me/teach/DS19_Fall/slide
     # end def
 
     def insert_after_pointer(self, p, val):
-        assert val not in self.val2node # allow only one node with value val
+        if val in self.val2node:
+            return  # allow only one node with value val
         predecessor = p
         successor = p.next
         newest = ListNode(val, predecessor,  successor)
@@ -47,13 +48,37 @@ class DoublyLinkedListUnique : # source: http://xpzhang.me/teach/DS19_Fall/slide
         return newest
     # end def
 
+    def insert_before_pointer(self, p, val):
+       self.insert_before_pointer(p.prev, val)
+    # end def
+
+
     def insert_after_value(self, val, new_val):
         p = self.get_pointer(val)
+        if p is None:
+            # in case val not in list, insert after header
+            p = self.header
         if p.next.val == new_val:
             return # nothing to be done
          # end if
         self.insert_after_pointer(p, new_val)
     # end def
+
+    def insert_before_value(self, val, new_val):
+        p = self.get_pointer(val)
+        if p is None:
+            # in case val not in list, insert before trailer
+            p = self.trailer
+        if p.prev.val == new_val:
+            return # nothing to be done
+         # end if
+        self.insert_before_pointer(p, new_val)
+    # end def
+
+    def get_val_prev_to_val(self, val):
+        p = self.get_pointer(val)
+        return p.prev.val
+
 
     def insert_at_head(self, val):
         return self.insert_after_pointer(self.header, val)
@@ -63,6 +88,7 @@ class DoublyLinkedListUnique : # source: http://xpzhang.me/teach/DS19_Fall/slide
         p.next.prev = p.prev
         p.prev.next = p.next
         self.size -= 1
+        del self.val2node[p.val]
     # end def
 
     def delete_node(self, p):

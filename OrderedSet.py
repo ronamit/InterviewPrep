@@ -53,6 +53,13 @@ class OrderedSet(collections.MutableSet):
         self.discard(key)
         return key
 
+    def last(self):
+        if not self:
+            raise KeyError('set is empty')
+        key = self.pop(last=True)
+        self.add(key) # un-change the state of the set
+        return key
+
     def __repr__(self):
         if not self:
             return '%s()' % (self.__class__.__name__,)

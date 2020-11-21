@@ -4,6 +4,8 @@
 # obj = FreqStack()
 # obj.push(x)
 # param_2 = obj.pop()
+
+# TODO: there is a flaw in this - if we poped some value we add it to the count2nums of the val-1, but we lose the insertion order to the stack
 # ---------------------------------------------------------------------------------------------------------------------------#
 from OrderedSet import OrderedSet
 from DoublyLinkedListUnique import DoublyLinkedListUnique
@@ -29,45 +31,41 @@ class FreqStack:
 
         if is_in_stack:
             old_cnt = self.num2count[x]
-            self.count2nums[old_cnt].discard(x) # because x is going to change its count
+            self.count2nums[old_cnt].discard(x)  # because x is going to change its count
             if len(self.count2nums[old_cnt]) == 0:
-                del self.count2nums[old_cnt]   # clean-up memory
+                # If old_cnt is no longer exist in the list, we need to update some stuff
+                del self.count2nums[old_cnt]  # clean-up memory
+                # Check if we need to update the candidate for pop:
+                if old_cnt == self.pop_candidate_count:
+                    self.pop_candidate_count = self.counts_list.get_val_prev_to_val(old_cnt)
+                    # take the last inserted num with this count
+                    self.pop_candidate = self.count2nums[self.pop_candidate_count].last()
+                self.counts_list.delete_val(old_cnt)
         else:
             old_cnt = 0
         # end if
+
         new_cnt = old_cnt + delta
-        self.num2count[x] = new_cnt
+        if new_cnt > 0: # if it is, we don't save it in the state
+            self.num2count[x] = new_cnt
 
         # update count2nums:
-        if new_cnt not in self.count2nums and new_cnt > 0:
-            self.count2nums[new_cnt] = OrderedSet()
-        # end if
-        if new_cnt > 0:
+        if new_cnt not in self.count2nums:
+            self.count2nums[new_cnt] = OrderedSet([x])
+        else:
             self.count2nums[new_cnt].add(x)
         # end if
+
+        if delta > 0:
+            self.counts_list.insert_after_value(old_cnt, new_cnt)
+        else:
+            self.counts_list.insert_before_value(old_cnt, new_cnt)
 
         # If the inserted item need to be set as the 'pop candidate':
         if new_cnt >= self.pop_candidate_count:  # includes the equal case since we want the more recent element
             self.pop_candidate = x
             self.pop_candidate_count = new_cnt
         # end if
-
-        # If the pop made x's count to be non-existent in the list, we need to update some stuff
-        if new_cnt not in self.count2nums:
-            self.counts_list.delete_val(new_cnt)
-
-
-        # if x == self.pop_candidate and new_cnt < self.pop_candidate_count:
-        #     # in this case the count of x is lowered by 1,  so if it was the pop_candidate we may now not be
-        #     if not (self.pop_candidate_count in self.count2nums and self.count2nums[self.pop_candidate_count] > 0):
-        #      # in case there is no longer any num in the stack with the same count as pop_candidate_count
-        #      self.pop_candidate_count = self.count2smaller_cnt[self.pop_candidate_count]
-        #     # end if
-        #     # get the last added item to the set (possible since it is an OrderedSet):
-        #     self.pop_candidate = self.count2nums[self.pop_candidate_count].pop(last=True)
-        #     self.count2nums[self.pop_candidate_count].add(self.pop_candidate)  # re-insert
-        # # end if
-
 
     # end def
 
@@ -107,8 +105,8 @@ for i in range(len(ops_list)):
     print('Output: ', out_list)
     print('num2count: ', stk.num2count)
     print('count2nums: ', stk.count2nums)
-    print('most_freq_num: ', stk.pop_candidate)
-    print('most_freq_count: ', stk.pop_candidate_count)
+    print('pop_candidate: ', stk.pop_candidate)
+    print('pop_candidate_count: ', stk.pop_candidate_count)
     print('counts_list: ', stk.counts_list)
 # end for
 print('Final output: ', out_list)
