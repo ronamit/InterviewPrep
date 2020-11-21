@@ -12,11 +12,11 @@ from DoublyLinkedListUnique import DoublyLinkedListUnique
 class FreqStack:
 
     def __init__(self):
-        self.num2count = dict() # key: num, val: count of num in stack
-        self.count2nums = dict() # key: count, val: set of nums with that count in the stack
-        self.pop_candidate = None # The num to pop first
-        self.pop_candidate_count = 0 # pop_candidate's count
-        self.counts_list = DoublyLinkedListUnique() # ordered list of all the counts of elements in the stack
+        self.num2count = dict()  # key: num, val: count of num in stack
+        self.count2nums = dict()  # key: count, val: set of nums with that count in the stack
+        self.pop_candidate = None  # The num to pop first
+        self.pop_candidate_count = 0  # pop_candidate's count
+        self.counts_list = DoublyLinkedListUnique()  # ordered list of all the counts of elements in the stack
     # end def
 
     def update_state(self, x, delta):
@@ -38,22 +38,6 @@ class FreqStack:
         new_cnt = old_cnt + delta
         self.num2count[x] = new_cnt
 
-        # update pop_candidate:
-        if new_cnt >= self.pop_candidate_count:  # includes the equal case since we want the more recent element
-            self.pop_candidate = x
-            self.pop_candidate_count = new_cnt
-        # end if
-        if x == self.pop_candidate and new_cnt < self.pop_candidate_count:
-            # in this case the count of x is lowered by 1,  so if it was the pop_candidate we may now not be
-            if not (self.pop_candidate_count in self.count2nums and self.count2nums[self.pop_candidate_count] > 0):
-             # in case there is no longer any num in the stack with the same count as pop_candidate_count
-             self.pop_candidate_count = self.count2smaller_cnt[self.pop_candidate_count]
-            # end if
-            # get the last added item to the set (possible since it is an OrderedSet):
-            self.pop_candidate = self.count2nums[self.pop_candidate_count].pop(last=True)
-            self.count2nums[self.pop_candidate_count].add(self.pop_candidate)  # re-insert
-        # end if
-
         # update count2nums:
         if new_cnt not in self.count2nums and new_cnt > 0:
             self.count2nums[new_cnt] = OrderedSet()
@@ -62,13 +46,29 @@ class FreqStack:
             self.count2nums[new_cnt].add(x)
         # end if
 
-        # update count2smaller_cnt:
-        if new_cnt == 1:
-            self.count2smaller_cnt[1] = 0
-        elif old_cnt not in self.count2nums:
-            self.count2smaller_cnt[new_cnt] = self.count2smaller_cnt[old_cnt]
-            del self.count2smaller_cnt[old_cnt]
+        # If the inserted item need to be set as the 'pop candidate':
+        if new_cnt >= self.pop_candidate_count:  # includes the equal case since we want the more recent element
+            self.pop_candidate = x
+            self.pop_candidate_count = new_cnt
         # end if
+
+        # If the pop made x's count to be non-existent in the list, we need to update some stuff
+        if new_cnt not in self.count2nums:
+            self.counts_list.delete_val(new_cnt)
+
+
+        # if x == self.pop_candidate and new_cnt < self.pop_candidate_count:
+        #     # in this case the count of x is lowered by 1,  so if it was the pop_candidate we may now not be
+        #     if not (self.pop_candidate_count in self.count2nums and self.count2nums[self.pop_candidate_count] > 0):
+        #      # in case there is no longer any num in the stack with the same count as pop_candidate_count
+        #      self.pop_candidate_count = self.count2smaller_cnt[self.pop_candidate_count]
+        #     # end if
+        #     # get the last added item to the set (possible since it is an OrderedSet):
+        #     self.pop_candidate = self.count2nums[self.pop_candidate_count].pop(last=True)
+        #     self.count2nums[self.pop_candidate_count].add(self.pop_candidate)  # re-insert
+        # # end if
+
+
     # end def
 
     def push(self, x: int) -> None:
@@ -109,8 +109,7 @@ for i in range(len(ops_list)):
     print('count2nums: ', stk.count2nums)
     print('most_freq_num: ', stk.pop_candidate)
     print('most_freq_count: ', stk.pop_candidate_count)
-    print('count2smaller_cnt: ', stk.count2smaller_cnt)
-    pass
+    print('counts_list: ', stk.counts_list)
 # end for
 print('Final output: ', out_list)
 # ---------------------------------------------------------------------------------------------------------------------------#

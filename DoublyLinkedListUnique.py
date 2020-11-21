@@ -60,8 +60,8 @@ class DoublyLinkedListUnique : # source: http://xpzhang.me/teach/DS19_Fall/slide
     # end def
 
     def remove_node(self, p):
-        p.prev = p.next
         p.next.prev = p.prev
+        p.prev.next = p.next
         self.size -= 1
     # end def
 
@@ -75,7 +75,7 @@ class DoublyLinkedListUnique : # source: http://xpzhang.me/teach/DS19_Fall/slide
         self.delete_node(p)
     # end def
 
-    def print(self):
+    def __str__(self):
         # prints elements (without header and trailer)
         out_str = '['
         p = self.header.next
@@ -83,23 +83,27 @@ class DoublyLinkedListUnique : # source: http://xpzhang.me/teach/DS19_Fall/slide
         while p.next is not None:
             out_str += str(p.val) + ', '
             p = p.next
-            assert p not in seen # infinite loop
+            assert p not in seen  # infinite loop
         # end while
-        out_str = out_str[:-2] + ']'
-        print(out_str)
+        if len(out_str) > 1:
+            out_str = out_str[:-2]
+        out_str = out_str + ']'
         return out_str
     # end def
+
 # end class
 
 if __name__ == "__main__":
     a = DoublyLinkedListUnique()
+    print(a)
     a.insert_at_head(1)
     a.insert_at_head(2)
     a.insert_at_head(3)
-    a.print()
+    print(a)
     a.insert_after_value(2, 9)
-    a.print()
+    print(a)
     a.delete_val(2)
-    a.print()
-
+    print(a)
+    a.insert_after_value(3, 8)
+    print(a)
 # end if
