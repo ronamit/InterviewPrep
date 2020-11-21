@@ -16,8 +16,14 @@ class FreqStack:
         self.count2nums = dict() # key: count, val: set of nums with that count in the stack
         self.pop_candidate = None # The num to pop first
         self.pop_candidate_count = 0 # pop_candidate's count
-        self.counts_list = DoublyLinkedListUnique() # ordered list of all the counts of elements in the stack
-    # end def
+        self.counts_list = DoublyLinkedListUnique()
+
+        self.count2smaller_cnt = dict()  # key: count of some num in stack, val: the highest count of some x in stack that is smaller than num
+        self.count2higher_cnt = dict()   # key: count of some num in stack, val: the highest count of some x in stack that is smaller than num
+        # those two allow a 'doubly-linked-list' structure,
+        # so it is O(1) easy to add\remove counts and go from one count to its two adajecnts ones.
+        # end def
+
 
     def update_state(self, x, delta):
         '''
