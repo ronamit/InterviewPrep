@@ -6,6 +6,7 @@
 # param_2 = obj.pop()
 
 # TODO: there is a flaw in this - if we poped some value we add it to the count2nums of the val-1, but we lose the insertion order to the stack
+# TODO: On second tought, mybe it is not a problem... but we may need that the lement of count2nums to be stacks tp keep insertion order
 # ---------------------------------------------------------------------------------------------------------------------------#
 from OrderedSet import OrderedSet
 from DoublyLinkedListUnique import DoublyLinkedListUnique
@@ -54,6 +55,7 @@ class FreqStack:
             self.count2nums[new_cnt] = OrderedSet([x])
         else:
             self.count2nums[new_cnt].add(x)
+            # TODO: this is problematic, since now x is the last element in count2nums[new_cnt], even if it is not the last inserted
         # end if
 
         if delta > 0:
