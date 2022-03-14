@@ -53,9 +53,9 @@ def solution_aux(A, B, C, last_two, cache):
 
 
 if __name__ == '__main__':
-    A = 100
+    A = 98
     B = 100
-    C = 100
+    C = 97
     print(f'A={A}, B={B}, C={C}')
     from time import perf_counter
     start = perf_counter()
