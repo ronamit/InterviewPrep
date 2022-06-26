@@ -68,7 +68,7 @@ def run_augmented_lagrangian_method(n_dim, m_constraints, func, f_grad, f_hess, 
         x = inner_solver(n_dim, phi, phi_grad, phi_hess, start=x)
 
         # gradient step w.r.t. lamb
-        lamb = lamb - lamb_step_size * constraints_vec(x)
+        lamb = lamb + lamb_step_size * np.maximum(0, constraints_vec(x))
 
         # update eta
         eta = eta * eta_mult
