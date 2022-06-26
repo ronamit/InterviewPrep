@@ -28,7 +28,7 @@ def run_newton_method(n_dim, func, grad, hess, start=None, step_size=0.1, max_it
 
 def run_augmented_lagrangian_method(n_dim, m_constraints, func, f_grad, f_hess, constraints_vec, constraints_jacobian,
                                     x_feasiable, inner_solver, n_iter=20,
-                                    eta_start=1e-3, eta_mult=2, lamb_step_size=1., verbose=1):
+                                    eta_start=1*1e-3, eta_mult=2, lamb_step_size=0.1, verbose=1):
     # https://en.wikipedia.org/wiki/Augmented_Lagrangian_method#General_method
 
 
@@ -51,7 +51,7 @@ def run_augmented_lagrangian_method(n_dim, m_constraints, func, f_grad, f_hess, 
         # The augmented lagrangian objective function:
         epsilon = 1e-6
         phi = lambda _x: func(_x) \
-                         + eta * np.sum(-np.log(np.maximum(0, -constraints_vec(_x)) + epsilon)) \
+                         + eta * np.sum(np.log(np.maximum(0, -constraints_vec(_x)) + epsilon)) \
                          + np.sum(lamb * constraints_vec(_x))
 
         phi_val = phi(x)
@@ -59,7 +59,7 @@ def run_augmented_lagrangian_method(n_dim, m_constraints, func, f_grad, f_hess, 
 
         # gradient w.r.t. x is the gradient of the augmented lagrangian
         phi_grad = lambda _x: f_grad(_x) \
-                             - eta * (1 / (constraints_vec(_x) + epsilon)) @ constraints_jacobian(_x) \
+                             + eta * (1 / (constraints_vec(_x) + epsilon)) @ constraints_jacobian(_x) \
                              + lamb @ constraints_jacobian(_x)
 
         phi_hess = lambda _x: f_hess(_x)
