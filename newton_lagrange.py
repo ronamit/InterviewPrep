@@ -27,8 +27,8 @@ def run_newton_method(n_dim, func, grad, hess, start=None, step_size=0.1, max_it
 
 
 def run_augmented_lagrangian_method(n_dim, m_constraints, func, f_grad, f_hess, constraints_vec, constraints_jacobian,
-                                    x_feasiable, inner_solver, n_iter=100,
-                                    eta_start=1e-3, eta_mult=1.5, lamb_step_size=0.1, verbose=1):
+                                    x_feasiable, inner_solver, n_iter=20,
+                                    eta_start=1e-3, eta_mult=2, lamb_step_size=1., verbose=1):
     # https://en.wikipedia.org/wiki/Augmented_Lagrangian_method#General_method
 
 
@@ -51,7 +51,7 @@ def run_augmented_lagrangian_method(n_dim, m_constraints, func, f_grad, f_hess, 
         # The augmented lagrangian objective function:
         epsilon = 1e-6
         phi = lambda _x: func(_x) \
-                         + eta * np.sum(-np.log(constraints_vec(_x) + epsilon)) \
+                         + eta * np.sum(-np.log(np.maximum(0, -constraints_vec(_x)) + epsilon)) \
                          + np.sum(lamb * constraints_vec(_x))
 
         phi_val = phi(x)
@@ -68,7 +68,7 @@ def run_augmented_lagrangian_method(n_dim, m_constraints, func, f_grad, f_hess, 
         x = inner_solver(n_dim, phi, phi_grad, phi_hess, start=x)
 
         # gradient step w.r.t. lamb
-        lamb = lamb + lamb_step_size * constraints_vec(x)
+        lamb = lamb - lamb_step_size * constraints_vec(x)
 
         # update eta
         eta = eta * eta_mult
@@ -80,12 +80,12 @@ quadratic_func = lambda x: 2 * (x[0] - 5) ** 2 + (x[1] - 1) ** 2
 quadratic_func_grad = lambda x: np.array([4 * (x[0] - 5), 2 * (x[1] - 1)])
 quadratic_func_hess = lambda x: np.array([[4, 0], [0, 2]])
 
-quadratic_func_constr = lambda x: np.array([-x[1] + 1 - 0.5 * x[0],
-                                            -x[0] + x[1],
-                                            +x[0] + x[1]])
-quadratic_func_constr_jacobian = lambda x: np.array([[-0.5, -1],
-                                                    [-1, 1],
-                                                    [1, 1]])
+quadratic_func_constr = lambda x: np.array([+x[1] - 1 + 0.5 * x[0],
+                                            +x[0] - x[1],
+                                            -x[0] - x[1]])
+quadratic_func_constr_jacobian = lambda x: np.array([[+0.5, +1],
+                                                    [+1, -1],
+                                                    [-1, -1]])
 m_constraints = 3
 x_feasiable = np.array([0, 0])
 #
