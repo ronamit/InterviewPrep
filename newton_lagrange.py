@@ -59,7 +59,7 @@ def run_augmented_lagrangian_method(n_dim, m_constraints, func, f_grad, f_hess, 
 
         # gradient w.r.t. x is the gradient of the augmented lagrangian
         phi_grad = lambda _x: f_grad(_x) \
-                             + eta * (1 / (constraints_vec(_x) + epsilon)) @ constraints_jacobian(_x) \
+                             + eta * (1 / (np.maximum(0, -constraints_vec(_x)) + epsilon)) @ constraints_jacobian(_x) \
                              + lamb @ constraints_jacobian(_x)
 
         phi_hess = lambda _x: f_hess(_x)
