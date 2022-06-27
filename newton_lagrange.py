@@ -28,8 +28,8 @@ def run_newton_method(n_dim, func, grad, hess, start=None, step_size_init=0.01, 
 
 
 def run_augmented_lagrangian_method(n_dim, m_constraints, func, f_grad, f_hess, constraints_vec, constraints_jacobian,
-                                    x_feasiable, inner_solver, n_iter=100,
-                                    eta_start=1e-6, eta_mult=1.5, eta_max=5e-5, lamb_step_size_init=1e-4, verbose=1):
+                                    x_feasiable, inner_solver, n_iter=20,
+                                    eta_start=1e-7, eta_mult=1.5, eta_max=5e-5, lamb_step_size_init=1e-4, verbose=1):
     # https://en.wikipedia.org/wiki/Augmented_Lagrangian_method#General_method
 
 
@@ -99,9 +99,9 @@ x_feasiable = np.array([0, 0])
 #                                                     ])
 # m_constraints = 2
 
-x = run_augmented_lagrangian_method(n_dim, m_constraints, quadratic_func, quadratic_func_grad, quadratic_func_hess,
-                                    quadratic_func_constr, quadratic_func_constr_jacobian, x_feasiable,
-                                    run_newton_method, n_iter=10)
+run_augmented_lagrangian_method(n_dim, m_constraints, quadratic_func, quadratic_func_grad, quadratic_func_hess,
+                                quadratic_func_constr, quadratic_func_constr_jacobian, x_feasiable,
+                                run_newton_method)
 
 # x = run_newton_method(n_dim, quadratic_func, quadratic_func_grad, quadratic_func_hess)
 # print('x = ', x)
