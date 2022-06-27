@@ -3,7 +3,7 @@ import numpy as np
 
 #########################################################################################################
 
-def run_newton_method(n_dim, func, grad, hess, start=None, step_size=0.1, max_iter=100, tolerance=1e-7, epsilon=1e-6):
+def run_newton_method(n_dim, func, grad, hess, start=None, step_size=0.01, max_iter=1000, tolerance=1e-8, epsilon=1e-8):
 
     if start is None:
         start = np.zeros(n_dim)
@@ -27,8 +27,8 @@ def run_newton_method(n_dim, func, grad, hess, start=None, step_size=0.1, max_it
 
 
 def run_augmented_lagrangian_method(n_dim, m_constraints, func, f_grad, f_hess, constraints_vec, constraints_jacobian,
-                                    x_feasiable, inner_solver, n_iter=20,
-                                    eta_start=1*1e-3, eta_mult=2, lamb_step_size=0.1, verbose=1):
+                                    x_feasiable, inner_solver, n_iter=100,
+                                    eta_start=1e-6, eta_mult=1.5, eta_max=5e-5, lamb_step_size=1e-5, verbose=1):
     # https://en.wikipedia.org/wiki/Augmented_Lagrangian_method#General_method
 
 
@@ -71,7 +71,7 @@ def run_augmented_lagrangian_method(n_dim, m_constraints, func, f_grad, f_hess, 
         lamb = lamb + lamb_step_size * np.maximum(0, constraints_vec(x))
 
         # update eta
-        eta = eta * eta_mult
+        eta = min(eta * eta_mult, eta_max)
 
 #########################################################################################################
 
