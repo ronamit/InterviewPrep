@@ -3,7 +3,7 @@ import numpy as np
 
 #########################################################################################################
 
-def run_newton_method(n_dim, func, grad, hess, start=None, step_size=0.01, max_iter=1000, tolerance=1e-8, epsilon=1e-8):
+def run_newton_method(n_dim, func, grad, hess, start=None, step_size_init=0.01, max_iter=1000, tolerance=1e-8, epsilon=1e-8):
 
     if start is None:
         start = np.zeros(n_dim)
@@ -15,6 +15,7 @@ def run_newton_method(n_dim, func, grad, hess, start=None, step_size=0.01, max_i
         grad_val = grad(x)
         hess_val = hess(x)
 
+        step_size = step_size_init / np.sqrt(1 + i)
         hess_val_s = hess_val + epsilon * np.eye(n_dim)  # add small number term for stability
         x = x + step_size * np.linalg.solve(hess_val_s, -grad_val)
         # note: using solve instead of inv because inv is slow and less stable
@@ -28,7 +29,7 @@ def run_newton_method(n_dim, func, grad, hess, start=None, step_size=0.01, max_i
 
 def run_augmented_lagrangian_method(n_dim, m_constraints, func, f_grad, f_hess, constraints_vec, constraints_jacobian,
                                     x_feasiable, inner_solver, n_iter=100,
-                                    eta_start=1e-6, eta_mult=1.5, eta_max=5e-5, lamb_step_size=1e-5, verbose=1):
+                                    eta_start=1e-6, eta_mult=1.5, eta_max=5e-5, lamb_step_size_init=1e-4, verbose=1):
     # https://en.wikipedia.org/wiki/Augmented_Lagrangian_method#General_method
 
 
@@ -68,6 +69,7 @@ def run_augmented_lagrangian_method(n_dim, m_constraints, func, f_grad, f_hess, 
         x = inner_solver(n_dim, phi, phi_grad, phi_hess, start=x)
 
         # gradient step w.r.t. lamb
+        lamb_step_size = lamb_step_size_init / np.sqrt(i + 1)
         lamb = lamb + lamb_step_size * np.maximum(0, constraints_vec(x))
 
         # update eta
