@@ -11,6 +11,7 @@ class Solution:
         r = 0
         chars = set()  # the chars in the current substring
         while r < n:
+            # find the maximum size of substrings without duplicate characters start with index l. If we do this for all l, we get our answer.
             while s[r] in chars:
                 if s[l] in chars:
                     chars.remove(s[l])
