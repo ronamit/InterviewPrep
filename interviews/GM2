@@ -1,0 +1,9 @@
+# estimatr that predicts mu and sigma for a given x
+
+def loss(x, y):
+	muhat, sigmahat = f(x)
+	neg_log_prob = +(y - muhat)**2 / sigmahat**2 + log(sigmahat)
+
+	N(0,I)
+
+	sigmahat
