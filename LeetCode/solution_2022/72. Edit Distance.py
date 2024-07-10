@@ -4,7 +4,7 @@ class Solution:
     def minDistance(self, word1: str, word2: str) -> int:
         n1 = len(word1)
         n2 = len(word2)
-        @lru_cache(maxsize=500)
+        @lru_cache(maxsize=None)
         def comp_T(k1, k2):
             if k2 == 0:
                 ans = k1
