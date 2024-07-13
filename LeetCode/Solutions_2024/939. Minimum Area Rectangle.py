@@ -1,3 +1,5 @@
+from typing import List
+
 class Solution:
     def minAreaRect(self, points: List[List[int]]) -> int:
         points = [tuple(p) for p in points]
