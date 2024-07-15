@@ -74,12 +74,12 @@ class Solution:
             for i in range(n_possible_seq):
                 F[i] = 0
                 for k in allowed_next_seq_per_seq[i]:
-                    F[i]  = (F[i] + F_prev[k]) % max_num
+                    F[i] +=  F_prev[k] % max_num
             F_prev = F.copy()
         # The final answer sum_j F(height, j)
         ans = 0
         for i in range(n_possible_seq):
-            ans = (ans + F[i]) % max_num
+            ans += F[i] % max_num
         return ans
 
 
