@@ -1,8 +1,8 @@
-
 from typing import List
+from functools import lru_cache
+
 
 class Solution:
-
     def find_one_row_configs(self, w: int):
         if w == 0:
             return [[]]
@@ -13,9 +13,7 @@ class Solution:
                 configs += [[b] + r for r in rest_configs]
         return configs
 
-    def find_one_row_configs_constrained(
-        self, w: int, prev_separators: list[set], start_idx=0
-    ):
+    def find_one_row_configs_constrained(self, w: int, prev_separators: list[set], start_idx=0):
         if w == 0:
             return [[]]
         configs = []
@@ -23,9 +21,7 @@ class Solution:
             if (start_idx + b) in prev_separators:
                 continue  # position not allowed
             if b <= w:
-                rest_configs = self.find_one_row_configs_constrained(
-                    w - b, prev_separators, start_idx=start_idx + b
-                )
+                rest_configs = self.find_one_row_configs_constrained(w - b, prev_separators, start_idx=start_idx + b)
                 configs += [[b] + r for r in rest_configs]
         return configs
 
@@ -34,27 +30,38 @@ class Solution:
 
         # get all possible configs for first row
         all_confs = self.find_one_row_configs(width)
-        
+
+        # convert to tuples for hashing
+        all_confs = [tuple(conf) for conf in all_confs]
+
+        # remove duplicates
+        all_confs = list(set(all_confs))
+        print(f"Possible first row configurations: {all_confs}")
+
         # enumerate all possible configs (unconstraiend)
         all_confs = [tuple(conf) for conf in all_confs]
         n_confs = len(all_confs)
         conf_to_idx = {conf: i for i, conf in enumerate(all_confs)}
 
-        allowed_adj_row_per_conf = [] # for each possible config, find the allowed next/prev row config
+        allowed_adj_row_per_conf = []  # for each possible config, find the allowed next/prev row config
 
-        for conf in all_confs:
+        for i_conf, conf in enumerate(all_confs):
             separators = [0]
+            print(f"Checking row config #{i_conf}: {conf}")
             # get the cumulative sum of bricks length to get the bricks separator locations
             for b in conf:
                 separators.append(separators[-1] + b)
             # remove the first (0) and last (w - 1) locations
             separators = set(separators[1:-1])
             allowed_configs = self.find_one_row_configs_constrained(width, separators)
-            
+            allowed_configs = [tuple(conf) for conf in allowed_configs]
+            print(f"Allowed configs in next row : {allowed_configs}")
             # convert to indexes:
-            allowed_configs = [conf_to_idx[tuple(conf)] for conf in allowed_configs]
-            
-            allowed_adj_row_per_conf.append(allowed_configs)
+            allowed_configs_inds = [conf_to_idx[conf] for conf in allowed_configs]
+            print(f"Allowed configs index in next row : {allowed_configs_inds}")
+            allowed_adj_row_per_conf.append(allowed_configs_inds)
+
+        print(f" Allowed adjenencent row  config indexes per conf: {allowed_adj_row_per_conf}")
 
         # Do dynamic programming to count the total number of possible.
         # F(i, j) = number of ways to build wall up to row i s.t. row i has seq j
@@ -68,14 +75,13 @@ class Solution:
             for i in range(n_confs):
                 F[i] = 0
                 for k in allowed_adj_row_per_conf[i]:
-                    F[i] += F_prev[k] % max_num
+                    F[i]  = (F[i] + F_prev[k]) % max_num
             F_prev = F
         # The final answer sum_j F(height, j)
         ans = 0
         for i in range(n_confs):
-            ans += F[i] % max_num
+            ans = (ans + F[i]) % max_num
         return ans
-
 
 
 sol = Solution()
