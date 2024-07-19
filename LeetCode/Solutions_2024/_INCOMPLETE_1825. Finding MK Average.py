@@ -8,6 +8,10 @@ class MKAverage:
     see a correct solution here:
     https://leetcode.com/problems/finding-mk-average/solutions/3938332/python3-keeping-three-containers-for-small-middle-large-values-runtime-98-memory-94/?envType=company&envId=google&favoriteSlug=google-thirty-days´
 
+
+    Note that my solution can be correctd if we add a queue of the last m elements with a pointer to their node in the heaps so we can remove old elements in O(log(k))
+    but it will require to implment the heap from scratch - to allow removing any elements (using sift-up and pop root)
+
     Solution idea:
     * we don't need to keep track of all the inserted numbers..
     just their sum and the the values of the k-bottom and k-top numbers
