@@ -1,12 +1,9 @@
-import functools
-import operator
-
-
 class Solution:
     def minMeetingRooms(self, intervals: list[list[int]]) -> int:
         # flatten to a time list with (t, is_start) elements
-        intervals = [[(a[0], True), (a[1], False)] for a in intervals]
-        all_times = functools.reduce(operator.iadd, intervals, [])
+        all_times = []
+        for a in intervals:
+            all_times += [(a[0], True), (a[1], False)]
 
         # sort by time - and put "start" after "end" if same time
         all_times.sort(key=lambda a: (a[0], a[1]))
