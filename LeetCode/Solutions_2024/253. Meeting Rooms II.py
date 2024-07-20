@@ -10,7 +10,7 @@ class Solution:
         # print(all_times)
         max_rooms = 0
         cur_rooms = 0
-        for t, is_start in all_times:
+        for _, is_start in all_times:
             if is_start:
                 cur_rooms += 1
             else:
