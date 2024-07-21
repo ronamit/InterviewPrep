@@ -1,8 +1,7 @@
 class Solution:
-    def validTree(self, n: int, edges: List[List[int]]) -> bool:
-        #  A directed tree is a directed acyclic graph (DAG) whose underlying undirected graph is an undirected tree (connected acyclic undirected graph.)
+    def validTree(self, n: int, edges: list[list[int]]) -> bool:
 
-        # adjecancy list:
+        # adjacency list:
         out_edges = [[] for _ in range(n)]
         in_edges = [[] for _ in range(n)]
         any_edge = [[] for _ in range(n)]
@@ -14,18 +13,10 @@ class Solution:
             any_edge[a].append(b)
             any_edge[b].append(a)
 
-        # In a tree |E| = |V| - 1 
+        # In a tree |E| = |V| - 1  (if more - must be a cycle, if less - not connected)
         if n_edges != n - 1:
             return False
         
-        # find sources:
-        sources = []
-        for i in range(n):
-            if len(in_edges[i]) == 0:
-                sources.append(i)
-        if len(sources) < 1:
-            return False
-        source = sources[0]
 
         # check connectivity in the underlying undirected graph
         visited = [False for _ in range(n)]
@@ -39,5 +30,5 @@ class Solution:
                     count += dfs_count(j)
             return count
 
-        is_connected = dfs_count(source) == n
+        is_connected = dfs_count(0) == n
         return is_connected
