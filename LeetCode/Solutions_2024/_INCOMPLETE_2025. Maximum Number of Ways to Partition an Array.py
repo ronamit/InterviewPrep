@@ -1,7 +1,7 @@
 """
     See a good soluition here: https://leetcode.com/problems/maximum-number-of-ways-to-partition-an-array/solutions/1507271/python-cpp-explanation-with-pictures-o-n/?envType=company&envId=google&favoriteSlug=google-thirty-days
 """
-
+import itertools
 
 def add_to_seen(d, x, i):
     if x not in d:
@@ -14,46 +14,45 @@ class Solution:
     def waysToPartition(self, nums: list[int], k: int) -> int:
 
         n = len(nums)
-        unchanged_sols = 0
-        change_sols = [0 for _ in range(n)]  # for each index, how many solutions are optimal if we change it
+        sol_without_replace = 0
+        sol_with_replace = [0 for _ in range(n)]  # for each index, how many solutions are optimal if we change it
 
         # cummaltive sum
-        up_sum = [None for _ in range(n)]
-        for i in range(n):
-            if i == 0:
-                up_sum[i] = nums[i]
-            else:
-                up_sum[i] = nums[i] + up_sum[i - 1]
-        down_sum = [None for _ in range(n)]
-        for i in range(n - 1, -1, -1):
-            if i == n - 1:
-                down_sum[i] = nums[i]
-            else:
-                down_sum[i] = nums[i] + down_sum[i + 1]
+        up_sum = list(itertools.accumulate(nums))
+        down_sum =  list(itertools.accumulate(nums[::-1]))[::-1]
 
-        # go up the indexes and see if we get up_sum[i] == down_sum[i] for some i
-        # or if we can fix the diff with a k replacement from 0..i
-        seen_nums = {nums[0]: [0]}  #  x : seem indexes
+        # go up the indexes with i and see if we get up_sum[i] == down_sum[i] 
+        # or if we can fix the diff with a k replacement of an item from 0..i
+        seen_nums = {}  #  x : seem indexes
+        add_to_seen(seen_nums, nums[0], 0)
         for pivot in range(1, n):
+            add_to_seen(seen_nums, nums[pivot], pivot)
             diff = down_sum[pivot] - up_sum[pivot - 1]
             if diff == 0:
-                unchanged_sols += 1
-            if (k - diff) in seen_nums:
-                for i in seen_nums[k - diff]:
-                    change_sols[i] += 1
-            add_to_seen(seen_nums, nums[pivot], pivot)
+                sol_without_replace += 1
+            else:
+                replace_candidate = k - diff # the value we need to replace to make the sums equal
+                if replace_candidate  in seen_nums:
+                    for i in seen_nums[replace_candidate]:
+                        sol_with_replace[i] += 1
 
-        # go down the indexes and see if for some i
-        # or if we can fix the diff with a k replacment from i,..,n-1
+        # go down the indexes with i and see if we can fix the diff with a k replacement of an item in i,..,n-1
         seen_nums = {}  #   x : count seen
         for pivot in range(n - 1, 0, -1):  # n-1,...,1
-            diff = up_sum[pivot] = down_sum[pivot - 1]
-            if (k - diff) in seen_nums:
-                for i in seen_nums[k - diff]:
-                    change_sols[i] += 1
             add_to_seen(seen_nums, nums[pivot], pivot)
+            diff = up_sum[pivot] - down_sum[pivot - 1]
+            if diff == 0:
+                # this case was covered above 
+                pass 
+            else:
+                replace_candidate = k - diff # the value we need to replace to make the sums equal
+                if replace_candidate in seen_nums:
+                    for i in seen_nums[replace_candidate]:
+                        sol_with_replace[i] += 1
 
-        ans = max(unchanged_sols, *change_sols)
+        ans = max(sol_without_replace, *sol_with_replace)
+        print(f"sol_with_replace = {sol_with_replace}")
+        print
         return ans
 
 
