@@ -41,10 +41,10 @@ class Solution:
             is_valid = is_valid_min_dist(mid)
             # print(f"{mid} is valid min distance? {is_valid}")
             if is_valid:
-                # try longer distances
+                # discard values x < mid
                 left = mid
             else:
-                # try shorter distances
+                # discard values x >= mid
                 right = mid - 1
         return left
 
