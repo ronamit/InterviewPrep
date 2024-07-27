@@ -87,8 +87,6 @@ class RangeModule:
         if i0 is None or i1 is None or i0 > i1:
             # no overlapping segments
             return None
-        assert 0 <= i0 < len(self.segments)
-        assert 0 <= i1 < len(self.segments)
         return (i0, i1)
 
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
