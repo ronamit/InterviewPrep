@@ -3,6 +3,7 @@ from functools import cache
 
 
 class Solution:
+    # Complexity: O(n_uniq_vals * sum(nums) / 2)
 
     def canPartition(self, nums: list[int]) -> bool:
 
