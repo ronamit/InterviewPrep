@@ -1,7 +1,7 @@
-from typing import List
+
 
 class Solution:
-    def minAreaRect(self, points: List[List[int]]) -> int:
+    def minAreaRect(self, points: list[list[int]]) -> int:
         points = [tuple(p) for p in points]
         points = sorted(points)
         points_set = set(points)
@@ -21,4 +21,3 @@ class Solution:
         if min_area is None:
             return 0
         return min_area
-                
