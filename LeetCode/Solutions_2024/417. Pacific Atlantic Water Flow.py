@@ -1,10 +1,9 @@
-from functools import cache
-
-
 class Solution:
     def pacificAtlantic(self, heights: list[list[int]]) -> list[list[int]]:
         # we can look at the problem as a graph - and check what coords can get to both oceans.
-        # start a DFS search from each (not yet visited) (i,j) and check which oceans are reachable
+        # start a DFS search from each (not yet visited) (i,j) and check which oceasns are reachable
+        
+        # TODO: more efficient - start from ocean tiles.
         m = len(heights)
         n = len(heights[0])
 
@@ -17,7 +16,6 @@ class Solution:
                 if 0 <= i2 < m and 0 <= j2 < n and heights[i2][j2] <= heights[i][j]:
                     yield i2, j2
 
-        @cache
         def dfs(i: int, j: int) -> tuple[bool]:
             nonlocal m, n, visited
             visited.add((i, j))
