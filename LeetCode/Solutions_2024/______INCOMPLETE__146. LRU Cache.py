@@ -9,6 +9,8 @@ class Item:
         return f"Item(key={self.key}, value={self.value}, n_uses={self.n_uses}, next_up_key={self.next_up_key})"
 
 
+# TODO: not based on usage count!!!!!!!!!! but on least in terms of chronological order usage
+
 class LRUCache:
 
     def __init__(self, capacity: int):
