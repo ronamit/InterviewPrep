@@ -12,7 +12,6 @@ def add_to_dict_list(d, k, x):
 class Solution:
     def leastInterval(self, tasks: list[str], n: int) -> int:
         tasks_counts = Counter(tasks)
-        n_jobs = len(tasks)
         n_task_names = len(tasks_counts)
 
         print("Task counts: ", tasks_counts)
@@ -73,4 +72,4 @@ if __name__ == "__main__":
     sol = Solution()
     tasks = ["A", "A", "A", "B", "B", "B", "C", "C", "C", "D", "D", "E"]
     n = 2
-    print("Answer: ", sol.leastInterval(tasks, n))
+    print("\n  Answer: ", sol.leastInterval(tasks, n), " cycles")
