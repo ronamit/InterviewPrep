@@ -7,9 +7,7 @@ class Solution:
         new_nums = [None for _ in range(n)]
         k = k % n
         for i in range(n):
-            new_nums[i] = nums[i-k]
-            print(nums[i-k])
+            new_nums[i] = nums[i - k]
+            print(nums[i - k])
         for i in range(n):
             nums[i] = new_nums[i]
-
-        
