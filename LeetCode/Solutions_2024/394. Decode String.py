@@ -18,6 +18,7 @@ class Solution:
         brk_start = i
         count = 1
         i += 1
+        # Note: the closing brackets location for each start of bracket can be precomputed for efficiency
         while count > 0 and i < len(s):
             if s[i] == "[":
                 count += 1
