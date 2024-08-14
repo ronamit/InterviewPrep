@@ -89,12 +89,11 @@ class Solution:
         h = [(-grid[0][0], 0, 0)] + [(float("inf"), i, j) for i in range(n) for j in range(n)]
         heapq.heapify(h)
         visited = set()
-        outdated_heap_items = set()
         while h:
             min_to_cur, i, j = heapq.heappop(h)
-            if (i,j) == (n-1, n-1):
+            if (i, j) == (n - 1, n - 1):
                 return -min_weight_to_cell[-1][-1]
-            if (i, j) in visited or (min_to_cur, i, j) in outdated_heap_items:
+            if (i, j) in visited:
                 continue
             visited.add((i, j))
             for ii, jj in self.neighbors(i, j, n):
@@ -104,7 +103,7 @@ class Solution:
                 if tentative_val < old_val:
                     min_weight_to_cell[ii][jj] = tentative_val
                     heapq.heappush(h, (tentative_val, ii, jj))
-                    outdated_heap_items.add((ii, jj, old_val))
+                    # note: we don't need to worry that (ii, jj, old_val) will be poped. since (tentative_val, ii, jj) will be poped first and mark (ii, jj) as visited
         return -min_weight_to_cell[-1][-1]
 
 
