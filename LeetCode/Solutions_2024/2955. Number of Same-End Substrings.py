@@ -5,7 +5,7 @@ class Solution:
     def sameEndSubstringCount(self, s: str, queries: list[list[int]]) -> list[int]:
         # n_subs = len of str
         # for each char if count(char) >= 2, n_subs += count(char) choose 2
-        # to get counts in range, substrcat cummalative counts on end and start
+        # to get counts in range, subtract cumulative counts on end and start
         n = len(s)
         counts = [[0 for _ in ascii_lowercase] for _ in range(n)]  # [n x Sigma]
         char_to_int = {c: i for i, c in enumerate(ascii_lowercase)}
