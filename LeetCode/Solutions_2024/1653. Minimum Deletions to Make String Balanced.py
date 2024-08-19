@@ -18,7 +18,7 @@ class Solution:
         min_del = n
         for i in range(n + 1):
             # how many deletions needed to make number of 'a' in s[:i] and number of 'b' in s[i:] equal
-            dels_pre = i - cnt_a_pre[i]  # need to delete all b's in the prefix [:i]
+            del_pre = i - cnt_a_pre[i]  # need to delete all b's in the prefix [:i]
             del_post = n - i - cnt_b_post[i]  # # need to delete all a's in the postfix [i:]
-            min_del = min(min_del, dels_pre + del_post)
+            min_del = min(min_del, del_pre + del_post)
         return min_del
