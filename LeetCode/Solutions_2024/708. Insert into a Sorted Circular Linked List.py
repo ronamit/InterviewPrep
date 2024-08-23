@@ -42,5 +42,3 @@ class Solution:
                 cur_node.next = node
                 return head
             cur_node = cur_node.next
-
-        return None
