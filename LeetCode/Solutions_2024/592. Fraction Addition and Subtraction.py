@@ -34,7 +34,7 @@ class Solution:
         common_denom = 1
         for i_ in range(len(denom_list)):
             common_denom *= denom_list[i_]
-        
+
         result_numerator = 0
         n_operands = len(operands)
         for i in range(n_operands):
@@ -48,7 +48,7 @@ class Solution:
         result_str = result_sign_str + str(abs(result_numerator)) + "/" + str(common_denom)
         return result_str
 
+
 if __name__ == "__main__":
     s = Solution()
     print(s.fractionAddition("-1/2+1/2+1/3"))
-    
