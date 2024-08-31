@@ -3,7 +3,6 @@ import math
 
 class Solution:
     def minimizeArrayValue(self, nums: list[int]) -> int:
-        n = len(nums)
         cum_sum = 0
         ans = 0
         for i, x in enumerate(nums):
