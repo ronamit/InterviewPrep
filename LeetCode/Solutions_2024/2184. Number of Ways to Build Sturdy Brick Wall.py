@@ -1,6 +1,3 @@
-from typing import List
-
-
 class Solution:
     def find_unconstrained_possible_seq(self, w: int):
         if w == 0:
@@ -9,7 +6,7 @@ class Solution:
         for b in self.bricks:
             if b <= w:
                 rest_of_seq = self.find_unconstrained_possible_seq(w - b)
-                configs += [[b] + r for r in rest_of_seq]
+                configs += [[b, *r] for r in rest_of_seq]
         return configs
 
     def find_constrained_possible_seq(self, w: int, not_allowed_inds: list[set], start_idx=0):
@@ -21,10 +18,10 @@ class Solution:
                 continue  # position not allowed
             if b <= w:
                 rest_of_seq = self.find_constrained_possible_seq(w - b, not_allowed_inds, start_idx=start_idx + b)
-                configs += [[b] + r for r in rest_of_seq]
+                configs += [[b, *r] for r in rest_of_seq]
         return configs
 
-    def buildWall(self, height: int, width: int, bricks: List[int]) -> int:
+    def buildWall(self, height: int, width: int, bricks: list[int]) -> int:
         self.bricks = bricks
 
         # get all possible configs for first row
@@ -70,7 +67,7 @@ class Solution:
         max_num = (int)(1e9 + 7)
         F = [1 for _ in range(n_possible_seq)]
         F_prev = [1 for _ in range(n_possible_seq)]
-        for h in range(1, height):
+        for _ in range(1, height):
             for i in range(n_possible_seq):
                 F[i] = 0
                 for k in allowed_next_seq_per_seq[i]:
