@@ -1,8 +1,5 @@
-from typing import List
-
-
 class Solution:
-    def maximumDetonation(self, bombs: List[List[int]]) -> int:
+    def maximumDetonation(self, bombs: list[list[int]]) -> int:
         # find the directed graph  O(n^2)
         n = len(bombs)
         adj_list = [[] for _ in range(n)]
